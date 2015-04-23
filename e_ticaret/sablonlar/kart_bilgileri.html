@@ -1,0 +1,15 @@
+<h2>Kart Bilgileri</h2>
+<br>
+<b>Müşteri: </b> {{ request.user.get_full_name }}
+<br>
+<b>E-posta: </b> {{ request.user.email }}
+<br>
+<b>Sipariş kodu: </b> {{ siparis_kodu }}
+<table border="1" style="border-collapse:collapse">
+{% for k in form %}
+	<tr>
+		<th> {{ k.label }} </th> 
+		<td>{{ k.value }} </td>
+	</tr>
+{% endfor %}
+</table>

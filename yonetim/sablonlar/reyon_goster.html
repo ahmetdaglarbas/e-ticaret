@@ -1,0 +1,54 @@
+﻿<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/css/commerce.css"/>
+<title>Mağazam: {{baslik}}</title>
+</head>
+<body>
+<h1>{{baslik}}</h1>
+<table border=1>
+<tr>
+	<th>Sıra</th>
+	<th>
+		{% if siralama != "1" %} <a href="?sayfa={{sayfa}}&siralama=1">Ürün</a>
+		{% else %} Ürün {% endif %}
+	</th>
+	<th>
+		{% if siralama != "2" %} <a href="?sayfa={{sayfa}}&siralama=2">Fiyatı</a>
+		{% else %} Fiyatı {% endif %}
+	</th>                                             
+	<th>İşlemler</th>
+</tr>
+
+{% for urun in urunler %}
+
+<tr>
+	<td>{{urunler.start_index|add:forloop.counter0}}</td>
+	<td><a href="" onclick="popup = window.open(            
+		'/yonetim/urun_ekle?ryn={{rynId}}&urun={{urun.id}}',
+		'UrunPenceresi', 'height=300,width=400, scrollbars=no, resizable=no');
+		return false" target="_blank">{{urun.adi}}</a></td>
+	<td>{{urun.fiyati}}</td>
+	<td>
+		<a href="/yonetim/urun_sil?ryn={{rynId}}&urn={{urun.id}}">Sil</a>
+		<a href="" onClick="popup = window.open('/yonetim/resimler/{{urun.id}}',
+		'ResimPenceresi', 'height=300, width=400, scrollbars=no, resizable=no');
+		return false" target="_blank">Resimler</a>
+	</td>
+</tr>
+
+{% endfor %}
+</table>
+
+{% include "icerikler/sayfalama.html" %}
+
+<br><br>
+
+<a href="" onClick="popup = window.open('/yonetim/urun_ekle?ryn={{rynId}}',
+	'YeniPencere', 'height=300,width=400,scrollbars=no,resizable=no');
+			return false" target="_blank">Ürün Ekle</a>
+
+<br><br>
+<a href="/yonetim/">Yönetim Ana Sayfa</a>
+<br>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/css/commerce.css"/>
+<title> Mağazam: {{baslik}} </title>
+</head>
+<body>
+<table width="100%" id="header">
+<tr><td style="vertical-align:middle">
+<b>
+{% if rynId %} <a href="/">Vitrin </a> {% else %} Vitrin {% endif %}
+{% for ryn in reyonlar %}
+	{% if rynId == ryn.pk %} {{ ryn }}
+	{% else %} <a href="/{{ryn.pk}}">{{ ryn }} </a>
+	{% endif %}
+	{% if not forloop.last %} | {% endif %}
+{% endfor %}
+</b>
+</td>
+<td style="vertical-align:middle;text-align:right">
+{% if request.user.is_authenticated %}
+	Merhaba <b>{{ request.user.get_full_name }} </b> |
+	<a href="" onClick="popup = window.open('/sepet/',
+		'SepetPenceresi', 'height=300,width=500, scrollbars=1, resizable=no');
+		return false" target="_blank"> Sepetim [{{sepet.urunler.all|length}} ürün] </a> |
+	<a href="/accounts/profil?next={{ request.get_full_path }}">Profilim</a> |
+	<a href="/accounts/logout?next={{ request.get_full_path }}">Çıkış</a>
+{% else %}
+	<form method="POST" action="/accounts/login/">
+	{% csrf_token %}
+	Kullanıcı adı: <input id="id_username" type="text" name="username" size="10">
+	Parola: <input type="password" name="password" id="id_password" size="10">
+	<input type="submit" value="Giriş yap">
+	<input type="hidden" name="next" value="{{ request.get_full_path }}">
+	<a href="/accounts/register/?next={{ request.get_full_path }}"> Kaydol </a>
+	</form>
+{% endif %}
+</td>
+</tr>
+</table>
+<br>
+
+{% for urn in urunler %}
+{% if forloop.counter0|divisibleby:2 %} <table><tr> {% endif %}
+<td>
+	<table border="1">
+		<tr>
+			<th width="80">Ürün </th>
+			<th width="50">Fiyatı</th>
+			<th width="80"></th>
+		</tr>
+		<tr>
+			<td>{{ urn.adi }} </td> <td>{{ urn.fiyati }} TL</td> <td align="center">
+			{% for r in urn.resimleriAl %}
+				{% if forloop.first %}
+					<img src="/static/resimler/{{ r.resim.url }}" height="200" width="150" id="urunResmi_{{urn.pk}}">
+					<br>
+					<a href="" onClick= 'document.getElementById(
+						"urunResmi_{{urn.pk}}").src="/static/resimler/{{ r.resim.url }}";
+						return false'>{{ forloop.counter}} </a>
+				{% else %}
+					<a href="" onClick= 'document.getElementById(
+						"urunResmi_{{urn.pk}}").src="/static/resimler/{{ r.resim.url }}";
+						return false'>{{ forloop.counter }} </a>
+				{% endif %}
+			{% endfor %}
+			
+			{% if request.user.is_authenticated %}
+			<tr><td colspan="3" align="center">
+				<a href="" onClick="popup = window.open('/sepet/?ekle={{ urn.pk }}',
+				'SepetPenceresi', 'height=300, width=500, scrollbars=1, resizable=no');
+				return false" target="_blank">Sepete At</a></td>
+			</tr>
+			{% endif %}
+	</table>
+</td>
+{% if not forloop.counter0|divisibleby:2 or forloop.last %} 
+</tr></table> 
+{% endif %}
+{% endfor %}
+<br>
+{% include "icerikler/sayfalama.html" %}
+</body>
+</html>

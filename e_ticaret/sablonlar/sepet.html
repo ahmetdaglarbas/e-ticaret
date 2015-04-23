@@ -1,0 +1,67 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/css/commerce.css"/>
+<title> Mağazam: Sepet - {{ request.user.get_full_name }} </title>
+</head>	
+<body onLoad="opener.location.reload(true)">
+
+{% if sepet.urunler.all %}
+<form name="sepet">
+<table width="100%" border=1>
+
+<h1>Sepetim [{{ request.user.get_full_name }}]</h1>
+<tr><th>Ürün</th><th>Fiyatı</th><th>Miktarı</th><th>Toplam</th></tr>
+{% for urn in sepet.urunler.all %}
+<tr>
+<td>
+{{ urn.urun.adi }} <a href="/sepet?cikart={{ urn.urun.pk }}"> Çıkart</a>
+</td>
+<td>{{ urn.urun.fiyati }}</td>
+<td> <input type="text" value="{{ urn.miktar }}" size="3" maxlength="3"
+		onchange="miktarGuncelle(this.value, {{ urn.urun.pk }})">
+</td>
+<td> {{ urn.toplam }} </td>
+</tr>
+
+{% endfor %}
+<tr>
+	<th colspan="3" style="text-align:right">Genel Toplam</th>
+	<th> {{ sepet.genel_toplam }} </th>
+</tr>
+</table>
+
+Ödeme Seçeneği:
+<select name="odeme">
+	<option value="kk">Kredi kartı</option>
+	<option value="hv">Havale</option>
+	<option value="kn">Kapıda nakit</option>
+</select>
+
+<input type="button" value="Satın al" onClick="odemeSecenekleri( sepet.odeme.value)">
+</form>
+
+{% else %}
+<h2>Sepetiniz boş</h2>
+
+{% endif %}
+</body>
+
+<script type="text/javascript">
+function miktarGuncelle(miktar, urnId) {
+	window.location.href = "/sepet?miktarGuncelle="+miktar+"&urun="+urnId;
+}
+
+function odemeSecenekleri(odeme) {
+	if (odeme=="kn") {
+		window.location.href = "/satinal/";
+	}
+	else if (odeme=="hv") {
+		window.location.href = "/satinal/havale_bilgileri/";
+	}
+	else {
+		window.location.href = "/satinal/kart_bilgileri/";
+	}
+}
+</script>
+</html>
+		

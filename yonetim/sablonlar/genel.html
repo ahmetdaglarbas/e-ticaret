@@ -1,0 +1,17 @@
+﻿<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/css/commerce.css"/>
+<title>Mağazam: {{ baslik }} </title>
+</head>
+<body>
+<h1>{{baslik}}</h1>
+<form method="POST">
+{% csrf_token %}
+<table border=1>
+{{form}}
+</table>
+<br>
+<center><input type="submit" value="Gönder"></center>
+</form>
+</body>
+</html>

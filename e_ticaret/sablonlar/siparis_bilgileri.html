@@ -1,0 +1,29 @@
+<h2> Sayın {{ request.user.get_full_name }} </h2>
+<br> Aşağıdaki siparişiniz işleme konulmuştur.
+Sipariş ile ilgili sorunlarınızda, mutlaka sipariş kodunuzu belirtiniz.
+<br><b>Sipariş kodu:</b> {{ siparis_kodu }}
+<br><b>Gönderilecek adres: </b> {{ kullanici.adresi }}
+<br><b>Cep Telefonu: </b> {{ kullanici.cep_telefonu }}
+<br><b>Ev Telefonu: </b> {{ kullanici.ev_telefonu }}
+<table width="100%" border=1 style="border-collapse:collapse">
+<tr>
+<th>Ürün</th>
+<th>Fiyatı</th>
+<th>Miktarı</th>
+<th>Toplam</th>
+</tr>
+
+{% for urn in sepet.urunler.all %}
+<tr>
+	<td> {{ urn.urun.adi }} </td>
+	<td> {{ urn.urun.fiyati }} </td>
+	<td> {{ urn.miktar }} </td>
+	<td> {{ urn.toplam }} </td>
+</tr>
+{% endfor %}
+
+<tr>
+	<th colspan="3" style="text-align:right">Genel Toplam</th>
+	<th>{{ sepet.genel_toplam }} </th>
+</tr>
+</table>

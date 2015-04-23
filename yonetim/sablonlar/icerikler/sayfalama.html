@@ -1,0 +1,14 @@
+{% if urunler.has_previous %}
+	<a href="?sayfa={{ urunler.previous_page_number }} & siralama={{siralama}}">Önceki</a>
+{% endif %}
+{% if urunler.paginator.num_pages > 1 %}
+	{% for s in urunler.paginator.page_range %}
+		{% if urunler.number == s %}<b>{{s}}</b>
+		{% else %} <a href="?sayfa={{s}}&siralama={{siralama}}">{{s}}</a>
+		{% endif %}
+	{%endfor %}
+{% endif %}
+
+{% if urunler.has_next %}
+	<a href="?sayfa={{ urunler.next_page_number }} &siralama={{siralama}}">Sonraki</a>
+{% endif %}

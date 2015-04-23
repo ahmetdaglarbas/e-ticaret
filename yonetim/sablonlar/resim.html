@@ -1,0 +1,34 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/css/commerce.css" />
+<title>Mağazam: {{baslik}}</title>
+</head>
+<body>
+<h1>{{baslik}} için resimler </h1>
+
+{% if resimler %}
+	<table border=1>
+		<tr><th>Resim</th></tr>
+		{% for r in resimler %}
+			<tr>
+				<td><a href="/static/resimler/{{r.resim.url}}"
+					target="_resim"> {{r.resim.url}} </a></td>
+				<td><a href="?sil={{r.pk}}">Sil</a></td>
+			</tr>
+		{% endfor %}
+	</table>
+{% else %}
+	<h2>Bu ürün için henüz resim eklenmemiş</h2>
+{% endif %}
+<br>
+
+<form method="POST" enctype="multipart/form-data">
+<table border=1>
+{% csrf_token %}
+{{ form }}
+</table>
+
+<br><input type="submit" value="Kaydet">
+</form>
+</body>
+</html>

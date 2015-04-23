@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Mağazam: Giriş</title>
+</head>
+<link rel="stylesheet" type="text/css" href="/static/css/commerce.css"/>
+<body>
+<h1>Kullanıcı Girişi</h1>
+<form method="POST">
+{% csrf_token %}
+<table border=1>
+{{ form }}
+</table>
+<input type="submit" value="Giriş" /></td>
+{% if next %}
+	<input type="hidden" name="next" value="{{ next }}" />
+{% else %}
+	<input type="hidden" name="next" value="/yonetim/" />
+{% endif %}
+</form>
+</body>
+</html>
